@@ -15,7 +15,7 @@ Route::get('/qa', function () {
 });
 
 Route::get('/notice', function () {
-    return G5WriteNotice::all();
+    return G5WriteNotice::with('comments')->get();
 });
 
 Route::get('/gallery', function () {
