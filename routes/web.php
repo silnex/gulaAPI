@@ -7,7 +7,7 @@ use App\G5Models\G5WriteQa;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/free', function () {
-    return G5WriteFree::all();
+    return G5WriteFree::select('wr_id', 'wr_subject', 'wr_content', 'mb_id', 'wr_name')->get();
 });
 
 Route::get('/qa', function () {
