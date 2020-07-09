@@ -19,5 +19,5 @@ Route::get('/notice', function () {
 });
 
 Route::get('/gallery', function () {
-    return G5WriteGallery::all();
+    return G5WriteGallery::with('files')->get();
 });
