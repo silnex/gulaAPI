@@ -3,6 +3,7 @@
 namespace App\G5Models;
 
 use SilNex\GuLa\G5Model;
+use SilNex\GuLa\Models\Gnu\G5BoardFile;
 use SilNex\GuLa\Traits\BelongToG5Member;
 
 class G5WriteGallery extends G5Model
@@ -57,5 +58,10 @@ class G5WriteGallery extends G5Model
         } else {
             throw new \Exception("해당 글은 댓글이 아닙니다.");
         }
+    }
+
+    public function files()
+    {
+        return $this->hasMany(G5BoardFile::class, 'wr_id', 'wr_id')->where('bo_table', 'gallery');
     }
 }
