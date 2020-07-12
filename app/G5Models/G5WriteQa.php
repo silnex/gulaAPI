@@ -3,6 +3,7 @@
 namespace App\G5Models;
 
 use SilNex\GuLa\G5Model;
+use SilNex\GuLa\Models\Gnu\G5BoardFile;
 use SilNex\GuLa\Traits\BelongToG5Member;
 
 class G5WriteQa extends G5Model
@@ -10,6 +11,15 @@ class G5WriteQa extends G5Model
     use BelongToG5Member;
 
     protected $table = 'g5_write_qa';
+
+    protected $bo_table = 'qa';
+
+    /**
+     * PRIMARY KEY 설정
+     * 
+     * @var string
+     */
+    protected $primaryKey = 'wr_id';
 
     /**
      * 할당(수정) 불가능한 속성(컬럼)
@@ -44,7 +54,7 @@ class G5WriteQa extends G5Model
      */
     public function comments()
     {
-        return $this->hasMany(G5WriteQa::class, 'wr_parent', 'wr_id');
+        return $this->hasMany(G5WriteQa::class, 'wr_parent', 'wr_id')->where('wr_is_comment', '=', '1');
     }
 
     /**
@@ -53,9 +63,17 @@ class G5WriteQa extends G5Model
     public function parent()
     {
         if ($this->wr_is_comment) {
-            return $this->belongsTo(G5WriteQa::class, 'wr_id', 'wr_parent');
+            return $this->belongsTo(G5WriteQa::class, 'wr_id', 'wr_parent')->where('wr_is_comment', '=', '0');
         } else {
             throw new \Exception("해당 글은 댓글이 아닙니다.");
         }
+    }
+
+    /**
+     * 게시판에 첨부된 파일을 가져옴
+     */
+    public function files()
+    {
+        return $this->hasMany(G5BoardFile::class, 'wr_id', 'wr_id')->where('bo_table', $this->bo_table);
     }
 }
